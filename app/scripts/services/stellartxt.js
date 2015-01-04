@@ -23,7 +23,6 @@ sc.factory('rpStellarTxt', ['$q', '$rootScope',
 
                 txts[domain] = txtPromise.promise;
 
-                // TODO: change these back to https
                 var urls = [
                         'https://www.'+domain+'/stellar.txt',
                         'https://'+domain+'/stellar.txt',

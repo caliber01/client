@@ -14,7 +14,7 @@ angular.module('stellarClient').controller('Lost2FADeviceCtrl', function($scope,
 
     StellarWallet.lostTotpDevice({
       server: Options.WALLET_SERVER+'/v2',
-      username: $scope.username+'@stellar.org',
+      username: $scope.username+'@'+Options.DEFAULT_FEDERATION_DOMAIN,
       password: $scope.password
     }).then(function() {
       $scope.sent = true;

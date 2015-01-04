@@ -21,6 +21,7 @@ window.Options = {
     API_SERVER: 'http://localhost:3001',
     API_STATUS_PATH: '/status.json',
     WALLET_SERVER: 'http://localhost:3000',
+    TRUST_SERVER: 'https://live.stellar.org:9002',
 
     // If set, login will persist across sessions (page reload). This is mostly
     // intended for developers, be careful about using this in a real setting.
@@ -38,8 +39,6 @@ window.Options = {
     MAX_WALLET_ATTEMPTS: 3,
 
     MAX_CONTACT_AGE: 24 * 60 * 60 * 1000, // One day in milliseconds.
-
-    CAPTCHA_KEY: '6LdSLvoSAAAAAHMyFDqGHGBDQhXdjnCwmhmV71nL',
 
     ANGULARTICS_WRITE_KEY: "K6D2s0Sjuu",
 

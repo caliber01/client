@@ -21,6 +21,7 @@ window.Options = {
     API_SERVER: 'https://api-stg.stellar.org',
     API_STATUS_PATH: '/status.json',
     WALLET_SERVER: 'https://wallet-stg.stellar.org',
+    TRUST_SERVER: 'https://live.stellar.org:9002',
 
     // If set, login will persist across sessions (page reload). This is mostly
     // intended for developers, be careful about using this in a real setting.
@@ -36,8 +37,6 @@ window.Options = {
     MAX_WALLET_ATTEMPTS: 3,
 
     MAX_CONTACT_AGE: 24 * 60 * 60 * 1000, // One day in milliseconds.
-
-    CAPTCHA_KEY: '6Ldj4PkSAAAAAL-kG23h3yRo0qSnO1BD3lr5zMEK',
 
     ANGULARTICS_WRITE_KEY: "K6D2s0Sjuu",
 

@@ -19,7 +19,11 @@ angular.module('stellarClient').controller('LoginCtrl', function($rootScope, $sc
       return $q.reject();
     }
 
-    var usernameV2 = $scope.username+'@stellar.org';
+    var usernameV2 = $scope.username;
+
+    if (usernameV2.indexOf('@') === -1) {
+        usernameV2 = usernameV2 + '@' + Options.DEFAULT_FEDERATION_DOMAIN;
+    }
 
     return $http.post(Options.WALLET_SERVER + '/v2/wallets/show_login_params', {
         username: usernameV2

@@ -83,16 +83,16 @@ sc.service('session', function($rootScope, $http, $timeout, $analytics, StellarN
     $analytics.eventTrack('Account Logged In');
 
     // Store a user object for the currently authenticated user
-    UserPrivateInfo.load(this.get('username'), this.get('wallet').keychainData.updateToken)
-      .then(function (user) {
-        self.put('userPrivateInfo', user);
-      })
-      .then(function () {
-        $rootScope.$broadcast('userLoaded');
-      })
-      .then(function () {
-        self.identifyToAnalytics();
-      });
+    // UserPrivateInfo.load(this.get('username'), this.get('wallet').keychainData.updateToken)
+    //   .then(function (user) {
+    //     self.put('userPrivateInfo', user);
+    //   })
+    //   .then(function () {
+    //     $rootScope.$broadcast('userLoaded');
+    //   })
+    //   .then(function () {
+    //     self.identifyToAnalytics();
+    //   });
 
     // check for the most up to date fairy address
     checkFairyAddress.bind(this)();

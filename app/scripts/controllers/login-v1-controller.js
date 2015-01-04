@@ -118,7 +118,7 @@ angular.module('stellarClient').controller('LoginV1Ctrl', function($rootScope, $
     // Perform a migration
     StellarWallet.createWallet({
       server: Options.WALLET_SERVER+'/v2',
-      username: $stateParams.username.toLowerCase()+'@stellar.org',
+      username: $stateParams.username.toLowerCase()+'@'+Options.DEFAULT_FEDERATION_DOMAIN,
       password: $scope.password,
       publicKey: signingKeys.publicKey,
       keychainData: JSON.stringify(wallet.keychainData),

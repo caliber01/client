@@ -2,7 +2,7 @@
 window.Options = {
     server: {
         "trusted" : true,
-        "websocket_ip" : "localhost",
+        "websocket_ip" : "live.stellar.org",
         "websocket_port" : 9001,
         "websocket_ssl" : false
     },
@@ -17,10 +17,11 @@ window.Options = {
 
     APP_ID: '1512347158994532',
     DOMAIN_NAME: 'stellar.local.dev',
-    DEFAULT_FEDERATION_DOMAIN: 'stellar.org',
-    API_SERVER: 'http://localhost:3001',
+    DEFAULT_FEDERATION_DOMAIN: 'hccoin.azurewebsites.net',
+    API_SERVER: 'http://hccoin.azurewebsites.net',
     API_STATUS_PATH: '/status.json',
-    WALLET_SERVER: 'http://localhost:3000',
+    WALLET_SERVER: 'https://wallet.stellar.org',
+    TRUST_SERVER: 'https://live.stellar.org:9002',
 
     // If set, login will persist across sessions (page reload). This is mostly
     // intended for developers, be careful about using this in a real setting.
@@ -38,8 +39,6 @@ window.Options = {
     MAX_WALLET_ATTEMPTS: 3,
 
     MAX_CONTACT_AGE: 24 * 60 * 60 * 1000, // One day in milliseconds.
-
-    CAPTCHA_KEY: '6LdSLvoSAAAAAHMyFDqGHGBDQhXdjnCwmhmV71nL',
 
     ANGULARTICS_WRITE_KEY: "K6D2s0Sjuu",
 

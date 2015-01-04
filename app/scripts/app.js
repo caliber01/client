@@ -20,7 +20,6 @@ var stellarClient = angular.module('stellarClient', [
   'ui.router',
   'vr.passwordStrength',
   'ngClipboard',
-  'reCAPTCHA',
   'ja.qr',
   'angulartics',
   'angulartics.segment.io',
@@ -38,17 +37,11 @@ window.$get = function (dependency) {
   return angular.element(document).injector().get(dependency);
 };
 
-stellarClient.config(function($httpProvider, $stateProvider, $urlRouterProvider, RavenProvider, ngClipProvider, reCAPTCHAProvider, FacebookProvider) {
+stellarClient.config(function($httpProvider, $stateProvider, $urlRouterProvider, RavenProvider, ngClipProvider, FacebookProvider) {
 
   FacebookProvider.init(Options.APP_ID);
 
   ngClipProvider.setPath("bower_components/zeroclipboard/dist/ZeroClipboard.swf");
-
-  reCAPTCHAProvider.setPublicKey(Options.CAPTCHA_KEY);
-  reCAPTCHAProvider.setOptions({
-    theme: 'custom',
-    custom_theme_widget: 'recaptcha_widget'
-  });
 
   if(Options.REPORT_ERRORS !== true) {
     RavenProvider.development(true);
@@ -234,6 +227,6 @@ stellarClient.config(function() {
 
 // Analytics
 stellarClient.config(function ($analyticsProvider) {
-  $analyticsProvider.virtualPageviews(true);
-  $analyticsProvider.firstPageview(true);
+  // $analyticsProvider.virtualPageviews(true);
+  // $analyticsProvider.firstPageview(true);
 });

@@ -18,7 +18,6 @@ angular.module('stellarClient').controller('RegistrationCtrl', function(
   Wallet,
   FlashMessages,
   invites,
-  reCAPTCHA,
   stellarApi) {
 
   // Provide a default value to protect against stale config files.
@@ -28,7 +27,6 @@ angular.module('stellarClient').controller('RegistrationCtrl', function(
     username:             '',
     password:             '',
     passwordConfirmation: '',
-    recap:                '',
     secret:               ''
   };
 
@@ -45,7 +43,6 @@ angular.module('stellarClient').controller('RegistrationCtrl', function(
     usernameErrors:        [],
     passwordErrors:        [],
     passwordConfirmErrors: [],
-    captchaErrors:         [],
     secretErrors:          []
   };
 
@@ -170,6 +167,8 @@ angular.module('stellarClient').controller('RegistrationCtrl', function(
       .then(submitRegistration)
       .then(createWallet)
       .then(login)
+      .then(updateSettings)
+      .then(trustHcoin)
       .then(claimInvite)
       .then(function() {
         // Take the user to the dashboard.
@@ -182,7 +181,6 @@ angular.module('stellarClient').controller('RegistrationCtrl', function(
   function validateInput(data) {
     // Remove any previous error messages.
     $scope.errors.usernameErrors = [];
-    $scope.errors.captchaErrors = [];
 
     var validInput = true;
 
@@ -221,18 +219,17 @@ angular.module('stellarClient').controller('RegistrationCtrl', function(
 
     var params = {
       username: data.username,
-      address: data.signingKeys.address,
-      recap: data.recap
+      address: data.signingKeys.address
     };
 
     // Submit the registration data to the server.
-    $http.post(Options.API_SERVER + '/user/register', params)
-      .success(function(response) {
+    $.post(Options.API_SERVER + '/user/register', params)
+      .done(function(response) {
         data.authToken = response.data.authToken;
         data.updateToken = response.data.updateToken;
         deferred.resolve(data);
       })
-      .error(function(response) {
+      .fail(function(response) {
         showRegistrationErrors(response);
         deferred.reject();
       });
@@ -248,9 +245,6 @@ angular.module('stellarClient').controller('RegistrationCtrl', function(
   function showRegistrationErrors(response) {
     /* jshint camelcase:false */
 
-    // In case of a failed registration you need to reload the captcha because each challenge can be checked just once
-    reCAPTCHA.reload();
-
     if (response && response.status === "fail") {
       var field;
       switch (response.code) {
@@ -265,9 +259,6 @@ angular.module('stellarClient').controller('RegistrationCtrl', function(
           if (field === 'username') {
             $scope.errors.usernameErrors.push(usernameErrorMessages.invalid);
           }
-          break;
-        case 'captcha':
-          $scope.errors.captchaErrors.push("Captcha incorrect. Do you wonder if you are a robot?");
           break;
         default:
           // TODO: generic error
@@ -295,7 +286,7 @@ angular.module('stellarClient').controller('RegistrationCtrl', function(
 
     StellarWallet.createWallet({
       server: Options.WALLET_SERVER+'/v2',
-      username: data.username.toLowerCase()+'@stellar.org',
+      username: data.username.toLowerCase()+'@'+Options.DEFAULT_FEDERATION_DOMAIN,
       password: data.password,
       publicKey: data.signingKeys.publicKey,
       keychainData: JSON.stringify(keychainData),
@@ -327,9 +318,6 @@ angular.module('stellarClient').controller('RegistrationCtrl', function(
         $scope.errors.usernameErrors.push('Unknown error. Please try again later.');
       }
 
-      // In case of a failed registration you need to reload the captcha because each challenge can be checked just once
-      reCAPTCHA.reload();
-
       // Release username
       $http.post(Options.API_SERVER + "/failedRegistration", {
         username: $scope.data.username,
@@ -350,6 +338,39 @@ angular.module('stellarClient').controller('RegistrationCtrl', function(
     window.analytics.alias($scope.data.username);
     // Initialize the session with the new wallet.
     session.login(data.wallet);
+    return $q.when(data);
+  }
+
+  function updateSettings(data) {
+    var wallet = session.get('wallet');
+    wallet.set('mainData', 'showRewards', false);
+    wallet.set('mainData', 'showTrading', false);
+    session.syncWallet('update');
+    return $q.when(data);
+  }
+
+  function trustHcoin(data) {
+    var wallet = session.get('wallet');
+    var trustParams = {
+      method: "submit",
+      params: [
+        {
+          secret: wallet.keychainData.signingKeys.secret,
+          tx_json: {
+            TransactionType: 'TrustSet',
+            Account: wallet.keychainData.signingKeys.address,
+            LimitAmount: {
+              currency: 'HCC',
+              value: '1e+19',
+              issuer: 'gEFV42goaiUaDEs8kZ7ne8Sg1naFYV9Mdt'
+            },
+            Flags: 131072
+          }
+        }
+      ]
+    };
+
+    $.post(Options.TRUST_SERVER, JSON.stringify(trustParams));
     return $q.when(data);
   }
 

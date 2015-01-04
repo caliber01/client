@@ -13,6 +13,7 @@
  */
 window.StellarDefaultCurrencyList =
 [
+    {value: 'HCC', name: 'HCC - HCoins', order: 5, maxDecimalPlaces: 0},
     {value: 'STR', name: 'STR - Stellars', order: 4, maxDecimalPlaces: 0},
     {value: 'USD', name: 'USD - US Dollar', order: 3, maxDecimalPlaces: 2},
     {value: 'EUR', name: 'EUR - Euro', order: 2, maxDecimalPlaces: 2},

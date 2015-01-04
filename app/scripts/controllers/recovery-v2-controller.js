@@ -15,7 +15,7 @@ angular.module('stellarClient').controller('RecoveryV2Ctrl', function($scope, $s
     }
 
     $scope.usernameClass = 'glyphicon-refresh spin';
-    var username = $scope.username + '@stellar.org';
+    var username = $scope.username + '@'+Options.DEFAULT_FEDERATION_DOMAIN;
 
     $http.post(Options.WALLET_SERVER + '/v2/wallets/show_login_params', {
       username: username
@@ -109,7 +109,7 @@ angular.module('stellarClient').controller('RecoveryV2Ctrl', function($scope, $s
     var deferred = $q.defer();
 
     // Append domain
-    params.username += '@stellar.org';
+    params.username += '@'+Options.DEFAULT_FEDERATION_DOMAIN;
 
     var userPartBytes = bs58.decode(params.recoveryCode);
     var serverPartBytes = bs58.decode(params.serverRecoveryCode);
